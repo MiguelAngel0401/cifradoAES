@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cifrado Simple</title>
+    <style>
+        body {
+            font-family: Arial;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fafafa;
+        }
+        h2 {
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .resultado {
+            background: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .verde {
+            background: #e8f5e9;
+        }
+    </style>
+</head>
+<body>
+    <h2>Cifrado de Mensajes</h2>
+    
+    <label>Clave (cualquier número):</label>
+    <input type="text" id="clave" value="1234" placeholder="Tu clave secreta">
+    
+    <label>Mensaje:</label>
+    <textarea id="mensaje" rows="3" placeholder="Escribe tu mensaje aquí"></textarea>
+    
+    <button onclick="cifrar()">Cifrar</button>
+    <button onclick="limpiar()">Limpiar</button>
+    
+    <div id="resultado"></div>
+
+    <script>
+        let mensajeCifradoGuardado = '';
+        
+        function cifrar() {
+            let mensaje = document.getElementById('mensaje').value;
+            let clave = document.getElementById('clave').value;
+            
+            if (!mensaje || !clave) {
+                alert('Necesitas escribir un mensaje y una clave');
+                return;
+            }
+            
+            // Cifrar
+            let cifrado = '';
+            for (let i = 0; i < mensaje.length; i++) {
+                let codigo = mensaje.charCodeAt(i) + parseInt(clave);
+                cifrado += String.fromCharCode(codigo);
+            }
+            
+            mensajeCifradoGuardado = cifrado;
+            
+            document.getElementById('resultado').innerHTML = 
+                '<div class="resultado">' +
+                '<strong>Mensaje Original:</strong><br>' +
+                mensaje + '<br><br>' +
+                '<strong>Mensaje Cifrado (así viaja por internet):</strong><br>' +
+                cifrado + '<br><br>' +
+                '<button onclick="descifrar()">Descifrar</button>' +
+                '</div>';
+        }
+        
+        function descifrar() {
+            let clave = document.getElementById('clave').value;
+            
+            // Descifrar
+            let descifrado = '';
+            for (let i = 0; i < mensajeCifradoGuardado.length; i++) {
+                let codigo = mensajeCifradoGuardado.charCodeAt(i) - parseInt(clave);
+                descifrado += String.fromCharCode(codigo);
+            }
+            
+            document.getElementById('resultado').innerHTML += 
+                '<div class="resultado verde">' +
+                '<strong>✓ Mensaje Descifrado (recuperado):</strong><br>' +
+                descifrado +
+                '</div>';
+        }
+        
+        function limpiar() {
+            document.getElementById('mensaje').value = '';
+            document.getElementById('resultado').innerHTML = '';
+            mensajeCifradoGuardado = '';
+        }
+    </script>
+</body>
+</html>
